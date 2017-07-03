@@ -9,6 +9,8 @@ from openpyxl.utils.exceptions import InvalidFileException
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import colors
 from openpyxl.styles.fonts import Font
+from openpyxl.styles.borders import Border, Side
+import openpyxl
 
 
 def getData(filePath, fileType="storage"):
@@ -75,7 +77,7 @@ def createFile(filePath):
     wb = Workbook()
     ws = wb.create_sheet('Report',0)
 
-    header = ['P/N', 'Description', 'Storage-Qty', 'Quickbook-Qty']
+    header = ['P/N', 'Description', 'Storage-Qty', 'Quickbook-Qty', 'Real-Qty']
     j = 1
     for i in header:
         ws.cell(row = 1, column = j, value = i).font = Font(color = colors.BLACK, sz=13, bold = True)       
@@ -116,9 +118,12 @@ def columnAdjustment(filePath):
     i=1
     for j in range(1,5):
         for i in range(1,ws.max_row+1):
-            alignment_obj = ws.cell(row = i, column = j).alignment.copy(horizontal='center', vertical='center')
-            ws.cell(row = i, column = j).alignment = alignment_obj
-    
+            cell = ws.cell(row = i, column = j)
+            cell.alignment = cell.alignment.copy(horizontal='center', vertical='center')
+            '''trying to add the bottom border here but the API is too stupid!'''
+#             side =Side(style='thin', color="FF000000")
+#             cell.style = cell.style.copy(border=Border(bottom=side))
+            
     width = 0
     widthNew = 0
     j=1
