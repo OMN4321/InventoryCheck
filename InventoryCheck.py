@@ -9,9 +9,16 @@ from dataController import dataManager
 import sys
 
 
+'''for LabView'''
 storagePath = str(sys.argv[1])
 quickbookPath =str(sys.argv[2])
 reportPath =str(sys.argv[3])
+
+'''Python debug'''
+# storagePath = "X://UtilityFiles//Storage.xlsx"
+# quickbookPath = "C://Users//emanu//Desktop//COSMED Asia-Pacific Pty Ltd_ProductServiceList.xlsx"
+# reportPath = "C://Users//emanu//Desktop//report.xlsx" 
+
 
 pnQuickbook, descrQuickbook, qtyQuickbook = fileManager.getData(quickbookPath, "notstorage")
 

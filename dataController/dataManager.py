@@ -8,13 +8,15 @@ def checkData(checkList, pnFrom, pnTo, qtyFrom, qtyTo):
     '''
     check if all the element in pnFrom are in pnTo
     when an element is not found it is added in the itemList if it's not there already
+    merge the list of PN from Storage and Quickbook into 1 list
     '''
     i = 0
     index = 0
     while(i in range(0,len(pnFrom))):
         if pnFrom[i] in pnTo:
             index=pnTo.index(pnFrom[i])
-            if qtyFrom[i] == qtyTo[index]: 
+            if qtyFrom[i] == qtyTo[index] and not (pnFrom[i] in checkList): 
+                checkList.append(pnFrom[i])
                 i=i+1
             else:
                 if pnFrom[i] in checkList or qtyFrom[i] == 0:

@@ -18,15 +18,14 @@ def getData(filePath, fileType="storage"):
     '''
     if fileType == "storage":
         sheet = 'STORAGE'
+        pnColumn = 1
         descriptionColumn = 3
         quantityColumn = 4
     else:
         sheet = 'Product Service List'
-        descriptionColumn = 2 
-        quantityColumn = 5
-    
-    wb = load_workbook(filePath)
-    ws = wb[sheet]
+        pnColumn = 2
+        descriptionColumn = 4 
+        quantityColumn = 7
     
     try:
         wb = load_workbook(filePath)
@@ -47,9 +46,8 @@ def getData(filePath, fileType="storage"):
     quantityList = []
 
     i = 2
-    while(i in range(2,ws.get_highest_row()+1)):
-        
-        pn = str(ws.cell(row = i, column = 1).value)
+    while(i in range(2,ws.max_row +1)):
+        pn = str(ws.cell(row = i, column = pnColumn).value)
         description = str(ws.cell(row = i, column = descriptionColumn).value)
         try:
             qty = int(ws.cell(row = i, column = quantityColumn).value)
@@ -59,8 +57,8 @@ def getData(filePath, fileType="storage"):
                 qty = 0
                 
              
-        if pn != '' and qty != '':    
-            partNumberList.append(pn)
+        if pn != '' and pn != 'product/service' and qty != '':    
+            partNumberList.append(pn.lower())
             descriptionList.append(description)
             quantityList.append(qty)
             i=i+1
@@ -75,8 +73,8 @@ def createFile(filePath):
     '''
     
     wb = Workbook()
-    ws = wb.create_sheet(0, 'Report')
-    
+    ws = wb.create_sheet('Report',0)
+
     header = ['P/N', 'Description', 'Storage-Qty', 'Quickbook-Qty']
     j = 1
     for i in header:
@@ -117,7 +115,7 @@ def columnAdjustment(filePath):
     j=1
     i=1
     for j in range(1,5):
-        for i in range(1,ws.get_highest_row()+1):
+        for i in range(1,ws.max_row+1):
             alignment_obj = ws.cell(row = i, column = j).alignment.copy(horizontal='center', vertical='center')
             ws.cell(row = i, column = j).alignment = alignment_obj
     
@@ -126,7 +124,7 @@ def columnAdjustment(filePath):
     j=1
     i=1
     for j in range(1,3):
-        for i in range(1,ws.get_highest_row()+1):
+        for i in range(1,ws.max_row+1):
             widthNew=len(str(ws.cell(row = i, column = j).value))
             if widthNew > width:
                 width = widthNew
