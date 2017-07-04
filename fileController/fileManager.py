@@ -7,10 +7,9 @@ Created on 1 Oct 2015
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from openpyxl.utils import get_column_letter
-from openpyxl.styles import colors
+from openpyxl.styles import colors, PatternFill
 from openpyxl.styles.fonts import Font
 from openpyxl.styles.borders import Border, Side
-import openpyxl
 
 
 def getData(filePath, fileType="storage"):
@@ -112,18 +111,20 @@ def columnAdjustment(filePath):
     '''
     adjust the width of the column in base on the biggest string
     '''
+    missmatch = False
     wb = load_workbook(filePath)
     ws = wb['Report']
     j=1
     i=1
-    for j in range(1,5):
+    for j in range(1,6):
         for i in range(1,ws.max_row+1):
             cell = ws.cell(row = i, column = j)
             cell.alignment = cell.alignment.copy(horizontal='center', vertical='center')
-            '''trying to add the bottom border here but the API is too stupid!'''
-#             side =Side(style='thin', color="FF000000")
-#             cell.style = cell.style.copy(border=Border(bottom=side))
-            
+            border = Border(bottom = Side(style='thin', color="FF000000"), left = Side(style='thin', color="FF000000"))
+            cell.border = border
+            if ws.cell(row = i, column = 3).value != ws.cell(row = i, column = 4).value and i != 1:
+                missmatch = True
+                cell.fill = PatternFill(start_color='caccce', end_color='caccce', fill_type='solid')
     width = 0
     widthNew = 0
     j=1
@@ -140,4 +141,5 @@ def columnAdjustment(filePath):
     
     
     wb.save(filePath)   
+    return missmatch
 

@@ -36,10 +36,11 @@ checkItems = dataManager.checkData(checkItems, pnQuickbook, pnStorage, qtyQuickb
 
 pn, description, qtyS, qtyQB = dataManager.getAllData(checkItems, pnStorage, pnQuickbook, descrStorage, descrQuickbook, qtyStorage, qtyQuickbook)
 
-if len(pn)>0:
+
+report = fileManager.createFile(reportPath)
+fileManager.writeInto(reportPath, pn, description, qtyS, qtyQB)
+missmatch = fileManager.columnAdjustment(reportPath)
+if missmatch:
     print('You need to double check some items in the inventory in the file:', reportPath)
-    report = fileManager.createFile(reportPath)
-    fileManager.writeInto(reportPath, pn, description, qtyS, qtyQB)
-    fileManager.columnAdjustment(reportPath)
 else:
     print('all good!!!')
