@@ -15,7 +15,7 @@ def checkData(checkList, pnFrom, pnTo, qtyFrom, qtyTo):
     while(i in range(0,len(pnFrom))):
         if pnFrom[i] in pnTo:
             index=pnTo.index(pnFrom[i])
-            if qtyFrom[i] == qtyTo[index] and not (pnFrom[i] in checkList): 
+            if qtyFrom[i] == qtyTo[index] and pnFrom[i] != 'none' and not (pnFrom[i] in checkList): 
                 checkList.append(pnFrom[i])
                 i=i+1
             else:
@@ -51,23 +51,26 @@ def getAllData(checkList, pnS, pnQB, descrS, descrQB, qtyS, qtyQB):
         if checkList[i] in pnS and checkList[i] in pnQB:
             index = pnS.index(checkList[i])
             indexQB = pnQB.index(checkList[i])
-            qtyStorage.append(qtyS[index])
-            pn.append(pnQB[indexQB])
-            descr.append(descrQB[indexQB])
-            qtyQuickbook.append(qtyQB[indexQB])
-        else:
-            if checkList[i] in pnS:
-                index = pnS.index(checkList[i])
+            if pnQB[indexQB] != "product/service":
                 qtyStorage.append(qtyS[index])
-                pn.append(pnS[index])
-                descr.append(descrS[index])
-                qtyQuickbook.append("Not Found")
-            else:
-                indexQB = pnQB.index(checkList[i])
-                qtyStorage.append("Not Found")
                 pn.append(pnQB[indexQB])
                 descr.append(descrQB[indexQB])
                 qtyQuickbook.append(qtyQB[indexQB])
+        else:
+            if checkList[i] in pnS:
+                index = pnS.index(checkList[i])
+                if pnS[index] != "product/service":
+                    qtyStorage.append(qtyS[index])
+                    pn.append(pnS[index])
+                    descr.append(descrS[index])
+                    qtyQuickbook.append("Not Found")
+            else:
+                indexQB = pnQB.index(checkList[i])
+                if pnQB[indexQB] != "product/service":
+                    qtyStorage.append("Not Found")
+                    pn.append(pnQB[indexQB])
+                    descr.append(descrQB[indexQB])
+                    qtyQuickbook.append(qtyQB[indexQB])
             
         i=i+1
     

@@ -58,7 +58,7 @@ def getData(filePath, fileType="storage"):
                 qty = 0
                 
              
-        if pn != '' and pn != 'product/service' and qty != '':    
+        if pn != '' and qty != '':    
             partNumberList.append(pn.lower())
             descriptionList.append(description)
             quantityList.append(qty)
